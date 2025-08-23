@@ -13,7 +13,7 @@ pipeline {
             steps {
                 dir('bugtracker-backend'){
                     sh '''
-                        sh 'go test -v ./... 2>&1 | go-junit-report > test-results.xml'
+                        go test -v ./... 2>&1 | go-junit-report > test-results.xml
 
                         # Generate coverate report 
                         go test -coverprofile=coverage.out -covermode=atomic ./...
@@ -33,7 +33,7 @@ pipeline {
                         reportDir: 'bugtracker-backend/reports',
                         reportFiles: 'coverage.html',
                         reportName: 'Backend Coverage Report'
-                        
+
                     ]
 
                 }
