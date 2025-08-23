@@ -17,7 +17,7 @@ pipeline {
 
                         # Generate coverate report 
                         go test -coverprofile=coverage.out -covermode=atomic ./...
-                        go tool cover -html=coverage.out -0 coverage.html
+                        go tool cover -html=coverage.out -o coverage.html
 
                         mkdir -p reports
                         mv coverage.html reports/
