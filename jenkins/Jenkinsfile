@@ -75,7 +75,7 @@ pipeline {
             }
         }
 
-        stage("Launch Application"){
+        stage("Launch Application for api"){
                     agent{
                         docker{
                             image 'docker:27.5.1'
