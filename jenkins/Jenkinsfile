@@ -70,7 +70,12 @@ pipeline {
                         }
                     }
                 }
-                stage("Launch Application"){
+               
+
+            }
+        }
+
+        stage("Launch Application"){
                     agent{
                         docker{
                             image 'docker:27.5.1'
@@ -82,11 +87,24 @@ pipeline {
                         sh 'docker compose up --build -d'
                     }
                 }
+        
+        stage('API Tests'){
+            agent{
+                docker {
+                    image 'mcr.microsoft.com/playwrite:v1.50.0-jammy'
+                    reuseNode true
+                    args '-u 0 --network=host'
+                }
+            }
+            steps{
+                dir('tests-api'){
+                    sh 'npx wait-port http://localhost:8080/api/health -t 30000'
 
+                    sh 'npm ci'
+                    sh 'npx playwrght test'
+                }
             }
         }
-
-       
         
     }
 
