@@ -45,3 +45,22 @@ jobs:
               run: |
                 npm ci
                 npm test
+
+    api-tests:
+        needs: [bugtracker-backend-tests, bugtracker-frontend-test]
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v4
+
+            - name: launch app
+              run: |
+               docker compose up --build -d
+               npx wait-port http://localhost:8080/api/health -t 30000
+
+            - name: api test execution
+              working-directory: ./test-api
+              run: |
+                npm ci
+                npx playwright test
